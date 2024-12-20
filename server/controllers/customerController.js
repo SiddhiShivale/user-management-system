@@ -8,13 +8,19 @@ const mongoose = require('mongoose');
 
 exports.homePage = async (req, res) => {
     
+    const messages = await req.flash("info");
+    
     const locals = {
         title: 'NodeJs',
         description: 'Free NodeJs User Management System'
     }
-    
-    res.render('index', locals);
 
+    try {
+            const customers = await Customer.find({}).limit(22);
+            res.render('index', { locals, messages, customers } );
+        } catch (error) {       
+            console.log(error);
+        }
 }
 
 /**
@@ -52,6 +58,7 @@ exports.postCustomer = async (req, res) => {
     
     try {
         await Customer.create(newCustomer);
+        await req.flash('info', 'New customer has been added');
         res.redirect('/');
 
     } catch(error) {
