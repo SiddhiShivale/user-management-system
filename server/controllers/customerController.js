@@ -12,7 +12,7 @@ exports.homepage = async (req, res) => {
   
     const locals = {
       title: "NodeJs",
-      description: "Free NodeJs User Management System",
+      description: "NodeJs User Management System",
     };
   
     let perPage = 12;
@@ -65,7 +65,7 @@ exports.addCustomer = async (req, res) => {
     
     const locals = {
         title: 'Add New Customer - NodeJs',
-        description: 'Free NodeJs User Management System'
+        description: 'NodeJs User Management System'
     }
     
     res.render('customer/add', locals);
@@ -97,5 +97,29 @@ exports.postCustomer = async (req, res) => {
     } catch(error) {
         console.log(error);
     }
+
+}
+
+/**
+ * Get /
+ * Customer Data 
+ */
+
+exports.view = async (req, res) => {
+    
+  try {
+    const customer = await Customer.findOne({ _id: req.params.id });
+
+    const locals = {
+      title: 'View Customer Data',
+      description: 'NodeJs User Management System'
+    };
+
+    res.render('customer/view', {
+      locals, customer
+    })
+  } catch (error) {
+    console.log(error);
+  }
 
 }
