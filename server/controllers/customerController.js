@@ -70,7 +70,7 @@ exports.addCustomer = async (req, res) => {
     
     res.render('customer/add', locals);
 
-}
+};
 
 /**
  * POST /
@@ -98,7 +98,7 @@ exports.postCustomer = async (req, res) => {
         console.log(error);
     }
 
-}
+};
 
 /**
  * Get /
@@ -122,4 +122,50 @@ exports.view = async (req, res) => {
     console.log(error);
   }
 
-}
+};
+
+/**
+ * Get /
+ * Edit Customer Data 
+ */
+
+exports.edit = async (req, res) => {
+    
+  try {
+    const customer = await Customer.findOne({ _id: req.params.id });
+
+    const locals = {
+      title: 'Edit Customer Data',
+      description: 'NodeJs User Management System'
+    };
+
+    res.render('customer/edit', {
+      locals, customer
+    })
+  } catch (error) {
+    console.log(error);
+  }
+
+};
+
+/**
+ * GET /
+ * Update Customer Data
+ */
+exports.editPost = async (req, res) => {
+  try {
+    await Customer.findByIdAndUpdate(req.params.id, {
+      firstName: req.body.firstName,
+      lastName: req.body.lastName,
+      tel: req.body.tel,
+      email: req.body.email,
+      details: req.body.details,
+      updatedAt: Date.now(),
+    });
+    await res.redirect(`/edit/${req.params.id}`);
+
+    console.log("redirected");
+  } catch (error) {
+    console.log(error);
+  }
+};
